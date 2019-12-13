@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <title>Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="keywords" content="" />
+
+    <!-- Custom Theme files -->
+    <link href="../css/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+    <link href="../css/style.css" type="text/css" rel="stylesheet" media="all">
+    <!-- font-awesome icons -->
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <!-- //Custom Theme files -->
+    <!-- online-fonts -->
+    <link href="http://fonts.googleapis.com/css?family=Amaranth:400,400i,700,700i" rel="stylesheet">
+    <link href="http://fonts.googleapis.com/css?family=PT+Sans:400,400i,700,700i" rel="stylesheet">
+
+
+        <style type="text/css">
+            #allmap{height:750px;width:85%;position:absolute;
+                right:0px;
+                top:0px;
+                z-index:-1;z-index:-1;
+                background-color:yellowgreen;
+                opacity:0.7;}
+            #r-result{width:100%; font-size:14px;}
+        </style>
+        <meta charset="utf-8">
+        <title>城市垃圾处理系统</title>
+        <meta http-equiv="Content-Type" content="textml; charset=utf-8" />
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+        <meta http-equiv="Content-Type" content="textml; charset=utf-8" />
+        <meta name="keywords" content="百度地图,百度地图API，百度地图自定义工具，百度地图所见即所得工具" />
+        <meta name="description" content="百度地图API自定义地图，帮助用户在可视化操作下生成百度地图" />
+        <title></title>
+        <!--引用百度地图API-->
+        <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=HfGWHlgPb1GqEFsGgBWpyen2jmm3w81G"></script>
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- header -->
+            <div class="col-lg-2" id="spy">
+                <div class="header-agile">
+                    <h1>
+                        <a class="navbar-brand" href="helloindex.html">
+                           城市垃圾
+                        </a>
+                        <a class="navbar-brand" href="helloindex.html">
+                            管理系统
+                        </a>
+                    </h1>
+                </div>
+                <ul class="nav nav-pills flex-column mt-lg-5">
+                    <li class="nav-item"><a class="nav-link active" href="map.html">车辆路径规划</a></li>
+                    <li class="nav-item"><a class="nav-link" href="statisc.html">垃圾产量分析</a></li>
+                    <li class="nav-item"><a class="nav-link" href="query.html">垃圾分类查询</a></li>
+
+                    <li class="nav-item"><a class="nav-link" href="#contact">关于我们</a></li>
+                    <br>
+                    <br />
+                    <br>
+                    <br />
+                    <br>
+                    <br />
+                    <br>
+                    <br />
+
+
+                    <input id="cityName" type="text" placeholder="请输入城市名">
+                    <a input type="button" style = "bottom:0" class="btn btn-block mt-lg-5 mt-3 w3ls-btn p-1 btn-theme text-white  text-uppercase font-weight-bold"
+                       data-toggle="modal" aria-pressed="false" data-target="#exampleModal1" value="查询" onclick="theLocation()">Search</a>
+
+
+                </ul>
+
+            </div>
+            <!-- //header -->
+            <!-- main -->
+            <div class="col-lg-10 scrollspy-example pr-0" data-spy="scroll" data-target="#spy">
+                <!-- banner -->
+
+                <!-- //banner -->
+                <!-- about -->
+            </div>
+        </div>
+        <div class="main">
+            <div id="section">
+                <div id="allmap"></div>
+                <div id="l-map"></div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<ml>
+    <script type="text/javascript">
+        // 百度地图API功能
+        var map = new BMap.Map("allmap");
+        var point = new BMap.Point(117.2,39.12);
+
+        map.centerAndZoom(point,11);
+        map.enableScrollWheelZoom();
+
+        function theLocation(){
+
+            var map = new BMap.Map("allmap");
+            var point = new BMap.Point(110.2,39.12);
+
+            map.centerAndZoom(point,11);
+            map.enableScrollWheelZoom();
+
+            var city = document.getElementById("cityName").value;
+
+            if(city != "") {
+                var myGeo = new BMap.Geocoder();
+                // 将地址解析结果显示在地图上,并调整地图视野
+                myGeo.getPoint(city, function (point) {
+                    if (point) {
+                        map.centerAndZoom(point,11);
+
+                        //以下代码向地图中心点point添加了一个标注，并将该标注添加到地图中
+                        // map.addOverlay(new BMap.Marker(point));
+                        var local = new BMap.LocalSearch(map, {
+                            renderOptions: {map: map}
+                        });
+                        local.search("垃圾转运");
+
+                        //Marker：标注表示地图上的点，可自定义标注的图标。
+                        var mark = new BMap.Maker(point);
+                        //Overlay：覆盖物的抽象基类，所有的覆盖物均继承此类的方法。
+                        map.addOverlay(mark);
+                    } else {
+                        alert("您选择地址没有解析到结果!");
+
+                    }
+                },city);
+                // 用城市名设置地图中心点
+
+
+            }
+        }
+    </script>
+</ml>
+
+<div id="contact" style = "align: center;" class="pt-lg-5">
+
+
+    <img src="../picture/map.jpg" width="700" height="400" style="position:absolute; right:50px; top:150px;" >
+    <div class="section"  style = "align: center;">
+        <div class="map-grid"  style = "align: center;">
+            <iframe src=""
+                    style="border:0;align: center;" allowfullscreen></iframe>
+            <div class="w3layouts-contact-pos"  style = "align: center;">
+
+                <div class="w3layouts-contact-pos-grid sr1 row">
+                    <div class="col-2 text-center">
+                        <span class="field-icon fa fa-phone" aria-hidden="true"></span>
+                    </div>
+                    <div class="col-10">
+                        <ul>
+                            <li>应用场景：</li>
+                            <li>转运位置查询</li>
+                            <li>车辆路径规划</li>
+                            <li>垃圾产量统计</li>
+                            <li>垃圾分类查询</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="w3layouts-contact-pos-grid sr2">
+                    <div class="row">
+                        <div class="col-2 text-center">
+                            <span class="field-icon fa fa-envelope-o fa-lg" aria-hidden="true"></span>
+                        </div>
+                        <div class="col-10">
+                            <ul>
+                                <li>
+                                    <a href="mailto:info@example.com">相关用户：</a>
+                                </li>
+                                <li>
+                                    <a href="mailto:info@example.com">各省市垃圾收集、处理单位</a>
+                                </li>
+                                <li>
+                                    <a href="mailto:info@example.com">及广大市民群众</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- footer -->
+        <div class="footer-bottom py-lg-5 py-3">
+            <div class="footerv2-w3ls  text-center">
+                <h6 class="w3f_title">Socialize with Us</h6>
+                <ul class="social-iconsv2 agileinfo pt-3">
+                    <li>
+                        <a href="#">
+                            <span class="fa fa-facebook"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="fa fa-twitter"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="fa fa-google-plus"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="fa fa-linkedin"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="footer-copy text-center">
+                <p class="text-dark">Copyright &copy; 2019.Tianjin University</p>
+            </div>
+        </div>
+        <!-- //footer -->
+    </div>
+</div>
+<!-- //contact -->
+
+
+
+
+
+</div>
+<!-- //main -->
+</div>
+</div>
+
+
+</body>
+
+</html>

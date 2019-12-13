@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <style type="text/css">
+        #allmap{height:700px;width:100%;}
+        #r-result{width:100%; font-size:14px;}
+        .topnav {
+            overflow: hidden;
+            background-color: #333;
+        }
+        .topnav a {
+            float: right;
+            display: block;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+        .topnav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .topnav a.active {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .topnav input[type=text] {
+            float: right;
+            padding: 6px;
+            margin-top: 8px;
+            margin-right: 16px;
+            border: none;
+            font-size: 17px;
+        }
+    </style>
+    <meta charset="utf-8">
+    <title>城市垃圾处理系统</title>
+    <meta http-equiv="Content-Type" content="textml; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="Content-Type" content="textml; charset=utf-8" />
+    <meta name="keywords" content="百度地图,百度地图API，百度地图自定义工具，百度地图所见即所得工具" />
+    <meta name="description" content="百度地图API自定义地图，帮助用户在可视化操作下生成百度地图" />
+    <title></title>
+    <!--引用百度地图API-->
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=HfGWHlgPb1GqEFsGgBWpyen2jmm3w81G"></script>
+</head>
+
+<body>
+
+<div class="topnav">
+    <a style="float:left" >起点：</a>
+    <input id="start" type="text" style="float:left" value="116.715375, 39.515095"/>
+    <a  style="float:left">终点：</a>
+    <input id="end" type="text" style="float:left" value="115.402794, 27.738408"/>
+
+    <a input type="button"  style="float:left" onclick="drive()">click here>>路径规划</a>
+
+    <a input type="button" value="查询" onclick="theLocation()">搜索</a>
+    <input id="cityName" type="text" placeholder="搜索..">
+
+    <a href="../html/helloindex.html">返回主页</a>
+</div>
+<div class="main">
+    <div id="section">
+        <div id="allmap"></div>
+        <div id="l-map"></div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
+
+<script type="text/javascript">
+
+
+
+    //百度地图api功能，GPS功能-单点沿直线运动
+
+    var map = new BMap.Map("allmap");
+    var point = new BMap.Point(117.2,39.12);
+
+    map.centerAndZoom(point,10);
+    map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
+    map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+
+    //点选起始点的坐标
+
+    function showInfo(e) {
+        document.getElementById("start").value = e.point.lng + "," + e.point.lat;
+
+        alert("起点的经纬度为：" + e.point.lng + "," + e.point.lat);
+    }
+    map.addEventListener("click", showInfo);
+
+    function showInfo2(e2) {
+        document.getElementById("end").value = e2.point.lng + "," + e2.point.lat;
+
+        alert("终点的经纬度为："+e2.point.lng + "," + e2.point.lat);
+    }
+    map.addEventListener("rightclick",showInfo2);
+
+    function drive() {
+
+        //从输入框中获取起始点的坐标
+        var alng, alat, blng, blat;
+
+        alng = document.getElementById("start").value.split(",")[0];
+        alat = document.getElementById("start").value.split(",")[1];
+        blng = document.getElementById("end").value.split(",")[0];
+        blat = document.getElementById("end").value.split(",")[1];
+
+        //     alert(alng + "\t" + alat + "\n" + blng + "\t" + blat);
+
+
+        //var myP1 = new BMap.Point(116.715375, 39.515095);  //起点设置为，河北廊坊站
+        //var myP2 = new BMap.Point(115.402794, 27.738408);  //终点设置为，江西新干站
+        //116.715375, 39.515095  115.402794, 27.738408
+        var myP1 = new BMap.Point(alng,alat);
+        var myP2 = new BMap.Point(blng,blat);
+
+        var myIcon = new BMap.Icon("../picture/car.png",
+
+            new BMap.Size(32, 70),
+            {
+                //单点标记图
+                imageOffset: new BMap.Size(0, 0)  //图片偏移量，以对准标记点中心
+            });
+        var driving2 = new BMap.DrivingRoute(map,
+            {
+                renderOptions: { //结果呈现设置
+                    map: map,
+                    autoViewport: true,  //检索结束后自动调整地图视野
+                    enableDragging: true   //起终点可进行拖拽
+                },
+                policy: BMAP_DRIVING_POLICY_LEAST_TIME //驾车方案的策略配置,最少时间
+
+
+            });    //创建一个驾车导航实例
+
+        driving2.search(myP1, myP2);    //显示检索路线
+
+        window.run = function () {
+            var driving = new BMap.DrivingRoute(map);
+            driving.search(myP1, myP2);
+            driving.setSearchCompleteCallback(function () {
+                var pts = driving.getResults().getPlan(0).getRoute(0).getPath();  //通过驾车实例获取一系列点的数组
+                var paths = pts.length; //获得的点的数量
+
+                var marioMK = new BMap.Marker(pts[0], { icon: myIcon });
+                map.addOverlay(marioMK);
+                i = 0;
+
+                function restMKPoint(i) {
+                    marioMK.setPosition(pts[i]);
+                    if (i < paths) {
+                        setTimeout(function () {
+                            i++;
+                            restMKPoint(i);
+                        },50);
+                    }
+                }
+                setTimeout(function () {
+                    restMKPoint(5);
+                }, 50)
+
+            });
+        }
+        setTimeout(function () {
+            run();
+
+        },100);
+    }
+</script>
+
+<ml>
+    <script type="text/javascript">
+        // 百度地图API功能
+
+        function theLocation(){
+
+
+            var city = document.getElementById("cityName").value;
+
+            if(city != "") {
+                var myGeo = new BMap.Geocoder();
+                // 将地址解析结果显示在地图上,并调整地图视野
+                myGeo.getPoint(city, function (point) {
+                    if (point) {
+                        map.centerAndZoom(point,11);
+
+                        //以下代码向地图中心点point添加了一个标注，并将该标注添加到地图中
+                        // map.addOverlay(new BMap.Marker(point));
+                        var local = new BMap.LocalSearch(map, {
+                            renderOptions: {map: map}
+                        });
+                        local.search("垃圾转运");
+
+                        //Marker：标注表示地图上的点，可自定义标注的图标。
+                        var mark = new BMap.Maker(point);
+                        //Overlay：覆盖物的抽象基类，所有的覆盖物均继承此类的方法。
+                        map.addOverlay(mark);
+                    } else {
+                        alert("您选择地址没有解析到结果!");
+
+                    }
+                },city);
+                // 用城市名设置地图中心点
+
+
+            }
+        }
+    </script>
+</ml>
+</body>
+</html>

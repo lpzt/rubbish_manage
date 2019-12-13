@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>垃圾分类查询</title>
+    <link rel="stylesheet" type="text/css" href="../css/query.css">
+</head>
+
+<body>
+<div class="topnav">
+    <a href="../html/helloindex.html">返回主页</a>
+    <a href="../html/map.html">路径规划</a>
+    <a href="../html/statisc.html">数据统计</a>
+    <a class="active" href="#home">当前页面</a>
+</div>
+<br>
+<br>
+<br>
+<div align = "center">
+    <div>
+        <img src="../picture/favicon.png"  style="vertical-align:middle" width="50px">&nbsp;&nbsp;<font size="6"><strong>垃圾分类查询</strong></font>
+    </div>
+</div>
+<br>
+<br>
+<div align = "center">
+    <form action="../php/select.php" method="post">
+        <input type="text" id="key_word" name="rubbish_name" placeholder="请输入关键字" required="required">
+        <button class="button">查询</button>
+    </form>
+</div>
+
+<br>
+<br>
+<br>
+<br>
+
+<div class = "four-class">
+<div id="Container1">
+    <div class="left1">
+        <div class = "left111">
+            <img style="max-width: 100px;" alt="湿垃圾" src="../picture/t3.png">
+        </div>
+        <div class = "left112">
+            <h3 style="color: #653F34">湿垃圾</h3>
+            <p style = "color: #653F34">易腐垃圾，如食材废弃料、剩饭剩菜、过期食品、水果皮、干果垃圾，废弃植物、中药残渣等生活废弃物品。</p>
+        </div>
+    </div>
+
+    <div class="right1">
+        <div class = "right121">
+            <img style="max-width: 100px;" alt="干垃圾" src="../picture/t2.png">
+        </div>
+        <div class = "right122">
+            <h3 style="color: #2A2925">干垃圾</h3>
+            <p style = "color: #2A2925">就是生活中的其它垃圾，并且不属于“湿垃圾”、“有害垃圾”、“可回收垃圾”的垃圾分类，也叫其它垃圾。</p>
+        </div>
+    </div>
+</div>
+
+<div id="Container2">
+    <div class="left2">
+        <div class = "left211">
+            <img style="max-width: 100px;" alt="可回收垃圾" src="../picture/t5.png">
+        </div>
+        <div class = "left212">
+            <h3 style="color: #00457C">可回收垃圾</h3>
+            <p style="color: #00457C">废纸、废塑料、废玻璃制品、废金属、废织物等适宜回收，并且可以回收重复利用的生活废弃物。</p>
+        </div>
+    </div>
+
+    <div class="right2">
+        <div class = "right221">
+            <img style="max-width: 100px;" alt="有害垃圾" src="../picture/t4.png">
+        </div>
+        <div class = "right222">
+            <h3 style="color: #FF5722">有害垃圾</h3>
+            <p style="color: #FF5722">废电池、费灯泡灯管、废药品、废油漆，以及有损人身体健康或者对环境直接或者间接会造成污染，有潜在危害的生活用品。</p>
+        </div>
+
+    </div>
+</div>
+</div>
+
+
+
+
+</body>
+</html>

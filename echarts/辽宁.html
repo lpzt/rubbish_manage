@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>ECharts</title>
+	<meta charset = "utf-8">
+</head>
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="height:400px"></div>
+    <!-- ECharts单文件引入 -->
+    <script type="text/javascript" src="../js/echarts.js"></script>
+    <script type="text/javascript">
+	var worldMapContainer = document.getElementById('main');
+	//用于使chart自适应高度和宽度,通过窗体高宽计算容器高宽
+	var resizeWorldMapContainer = function() {
+	worldMapContainer.style.width = window.innerWidth + 'px';
+	worldMapContainer.style.height = window.innerHeight + 'px';
+	};
+	//设置容器高宽
+	resizeWorldMapContainer();
+        // 基于准备好的dom，初始化echarts图表
+        var myChart = echarts.init(document.getElementById('main')); 
+        
+        var option = {
+            title : {
+                text: '辽宁近年垃圾清运量',
+            },
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['垃圾清运量']
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    magicType : {show: true, type: ['line', 'bar']},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            grid: {
+                left: '3%',
+                right: '10%',
+                bottom: '10%',// 这几个属性可以控制图表上下左右的空白尺寸，可以自己试试。
+                containLabel: true
+            },
+            xAxis : [
+                {
+                    type : 'category',
+                    name : '年份',
+                    boundaryGap : false,
+                    data : ['2009','2010','2011','2012','2013','2014','2015','2016','2017']
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value',
+                    name : '清运量（万吨）',
+                    axisLabel : {
+                        formatter: '{value} '
+                    }
+                }
+            ],
+            series : [
+                {
+                    name:'垃圾清运量',
+                    type:'line',
+                    data:[813.29,837.26,876.00,929.92,927.12,917.14,933.20,933.05,864.53],
+                    markPoint : {
+                        data : [
+                            {type : 'max', name: '最大值'},
+                            {type : 'min', name: '最小值'}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name: '平均值'}
+                        ]
+                    }
+                }
+                ]
+        	};
+ 
+        // 为echarts对象加载数据 
+        myChart.setOption(option); 
+		window.onresize = function(){
+			resizeWorldMapContainer();
+			myChart.resize();
+			}
+    </script>
+</body>
+</html>
